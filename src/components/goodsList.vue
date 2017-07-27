@@ -63,7 +63,8 @@ export default {
                             
                         ]
                     }
-                ]
+                ],
+                "cartDatas":[],
     }
 
   },
@@ -72,8 +73,23 @@ export default {
     var palceholderImg='/static/images/list_placeholder.png';
       return url===null||url.length===0?palceholderImg:url;
     },
-    countChange:function(changedCount){
-        console.log(changedCount);
+    formateCartData:function(data){
+      return{'dishId':data['dishId'],'dishName':data['dishName'],'price':data['price'],'currentCount':data['currentCount']};
+    },
+    countChange:function(changedCount){//购物车数据变化
+        console.log('changedCount');
+        var cartHas=false;
+        this.cartDatas.forEach( function(cartEle, index) {
+            if(cartEle['dishId']===changedCount['dishId']){
+                cartEle['currentCount']=changedCount['currentCount'];//修改购物车数据
+                cartHas= true;
+            }
+        });
+        console.log('cartHas:'+cartHas);
+        if(!cartHas){
+           this.cartDatas.push(this.formateCartData(changedCount));//添加到购物车
+        }
+        this.$parent.$emit('cartChange',this.cartDatas);
     },
   },
     components: {

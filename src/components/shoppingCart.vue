@@ -10,13 +10,15 @@
                             </div>
                         </div>
                         <ul>
-                            <li>
+                          <template v-for="cartData in cartDatas"> 
+                            <li :key="cartData.dishId">
                                 <div class="goods-name">
-                                    龙虾狮子头精品套餐
+                                    {{cartData.dishName}}
                                 </div>
-                                <div class="total-money">￥28</div>
-                               <calculation />
+                                <div class="total-money">￥{{cartData.price}}</div>
+                               <calculation :count='cartData.currentCount'/>
                             </li>
+                          </template>
                         </ul>
                     </div>
                 </div>
@@ -33,7 +35,7 @@
 </template>
 
 <script>
-import calculation from '../../src/components/calculation'
+import calculation from '../../src/components/calculation';
 export default {
   name: 'shoppingCart',
   data () {
@@ -44,15 +46,17 @@ export default {
       containerClass:"shopping-cart-list-container",
       layerOverlay:"layer-overlay",
       layerVisible:"layer-overlay-visible",
-      shoppingCart:"shopping-cart"
+      shoppingCart:"shopping-cart",
+      cartDatas:[],
+      totalCount:this.getTotalCount(this.cartDatas)
     }
   },
-  props:{
-    totalCount:{
-      type:Number,
-      default:0
-    }
-  },
+  // props:{
+  //   totalCount:{
+  //     type:Number,
+  //     default:0
+  //   }
+  // },
   methods:{
     toggleCart:function(){
       if(this.totalCount>0){
@@ -62,11 +66,26 @@ export default {
     clearCart:function(){
       this.totalCount=0;
       this.isShow=false;
+    },
+    getTotalCount:function(datas){
+      var count=0;
+      if(datas){
+          datas.forEach( function(data, index) {
+            count+=data['currentCount'];
+          });
+      }else{
+        return count;
+      }
     }
   },
-   components: {
+  components: {
         calculation
-    },
+  },
+  created: function () {
+       this.$parent.$on('cartChange', (changeDatas) => {
+          this.cartDatas = changeDatas;
+       });
+  }
 }
 </script>
 <style lang="scss" scoped>

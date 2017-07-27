@@ -13,12 +13,16 @@ export default {
   name: 'calculation',
   data () {
     return {
-     count:0,
+     //count:0,
      reduceClass:'cdicon-dec',
     }
   },
   props:{
     totalCount:{
+      type:Number,
+      default:0,
+    },
+    count:{
       type:Number,
       default:0,
     },

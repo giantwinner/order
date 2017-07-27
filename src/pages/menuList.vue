@@ -52,7 +52,7 @@ export default {
   name: 'menuList', 
   data () { 
     return {
-     totalCount:1,
+     totalCount:0,
     }
   },
    components: {
