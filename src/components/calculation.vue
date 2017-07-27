@@ -1,8 +1,8 @@
 <template>
 
                                 <div class="select-amount">
-                                    <i :class="[{hidden:count<=0},reduceClass]"  @click="reduce"></i>
-                                    <input type="number" readonly :class="{hidden:count<=0}" v-model="count">
+                                    <i :class="[{hidden:self_count<=0},reduceClass]"  @click="reduce"></i>
+                                    <input type="number" readonly :class="{hidden:self_count<=0}" v-model="self_count">
                                     <i class="cdicon-add" @click="add"></i>
                                 </div>
                            
@@ -13,7 +13,7 @@ export default {
   name: 'calculation',
   data () {
     return {
-     //count:0,
+     self_count:this.count,
      reduceClass:'cdicon-dec',
     }
   },
@@ -29,16 +29,16 @@ export default {
     dishe:Object
   },
   methods:{
-    add:function(count){
-          this.count++;
-          this.dishe['currentCount']=this.count;
+    add:function(){
+          this.self_count++;
+          this.dishe['currentCount']=this.self_count;
           this.dishe['changedCount']=1;
           this.$emit('countChange',this.dishe);
     },
     reduce:function(){
-      if(this.count>0){
-          this.count--;
-           this.dishe['currentCount']=this.count;
+      if(this.self_count>0){
+          this.self_count--;
+           this.dishe['currentCount']=this.self_count;
            this.dishe['changedCount']=-1;
            this.$emit('countChange',this.dishe);
       }
