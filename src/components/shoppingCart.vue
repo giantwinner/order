@@ -11,24 +11,25 @@
                         </div>
                         <ul>
                           <template v-for="cartData in cartDatas"> 
-                            <li :key="cartData.dishId">
-                                <div class="goods-name">
-                                    {{cartData.dishName}}
-                                </div>
-                                <div class="total-money">￥{{cartData.price}}</div>
-                               <calculation :count='cartData.currentCount'/>
-                            </li>
+                            <template v-for="dishes in cartData.dishes"> 
+                              <li :key="dishes.dishId" v-if="dishes.cartCount>0">
+                                  <div class="goods-name">
+                                      {{dishes.dishName}}
+                                  </div>
+                                  <div class="total-money">￥{{dishes.price}}</div>
+                                  <calculation :dishe="dishes"   @cartCountChange="cartCountChange"/>
+                              </li>
+                            </template>
                           </template>
                         </ul>
                     </div>
                 </div>
-                <div :class="[{empty:totalCount===0},shoppingCart]"> 
+                <div :class="[{empty:cTotalCount===0},shoppingCart]"> 
                     <div class="cart-icon" @click="toggleCart">
-
-                        <span class="amount" v-show='totalCount>0'>{{totalCount}}</span>
+                        <span class="amount" v-show='cTotalCount>0'>{{cTotalCount}}</span>
                         <i class="cdicon-gwc"></i> 
                     </div>
-                    <div class="total">共￥<span>1663.6</span></div>
+                    <div class="total">共￥<span>{{cTotalPrice}}</span></div>
                     <a href="" class="to-checout">去结算</a>
                 </div>
   </div>
@@ -47,16 +48,11 @@ export default {
       layerOverlay:"layer-overlay",
       layerVisible:"layer-overlay-visible",
       shoppingCart:"shopping-cart",
-      cartDatas:[],
-      totalCount:this.getTotalCount(this.cartDatas)
+      totalCount:0,
+      totalPrice:0,
+      cartDatas:this.data,
     }
   },
-  // props:{
-  //   totalCount:{
-  //     type:Number,
-  //     default:0
-  //   }
-  // },
   methods:{
     toggleCart:function(){
       if(this.totalCount>0){
@@ -64,28 +60,43 @@ export default {
       }
     },
     clearCart:function(){
-      this.totalCount=0;
+        this.cartDatas.forEach( function(disheType, index1) {
+              disheType.dishes.forEach( function(dishe, index2) {
+                  dishe['cartCount']=0;
+              });
+        });
       this.isShow=false;
     },
-    getTotalCount:function(datas){
-      var count=0;
-      if(datas){
-          datas.forEach( function(data, index) {
-            count+=data['currentCount'];
-          });
-      }else{
-        return count;
-      }
-    }
+     cartCountChange:function(data){
+         this.$emit('cartCountChange',data);
+    },
   },
+   props:['data'],
   components: {
         calculation
   },
-  created: function () {
-       this.$parent.$on('cartChange', (changeDatas) => {
-          this.cartDatas = changeDatas;
-       });
-  }
+  computed:{
+    cTotalCount:function(){
+      var self=this;
+      self.totalCount=0;
+       this.data.forEach( function(disheType, index1) {
+              disheType.dishes.forEach( function(dishe, index2) {
+                  self.totalCount+=dishe['cartCount'];
+              });
+        });
+       return this.totalCount;
+    },
+    cTotalPrice:function(){
+      var self=this;
+      this.totalPrice=0;
+       this.data.forEach( function(disheType, index1) {
+              disheType.dishes.forEach( function(dishe, index2) {
+                  self.totalPrice+=dishe['price']*dishe['cartCount'];
+              });
+        });
+       return this.totalPrice;
+    }
+  },
 }
 </script>
 <style lang="scss" scoped>

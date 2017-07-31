@@ -1,11 +1,9 @@
 <template>
-
-                                <div class="select-amount">
-                                    <i :class="[{hidden:self_count<=0},reduceClass]"  @click="reduce"></i>
-                                    <input type="number" readonly :class="{hidden:self_count<=0}" v-model="self_count">
-                                    <i class="cdicon-add" @click="add"></i>
-                                </div>
-                           
+  <div class="select-amount">
+      <i :class="[{hidden:cal_dishe.cartCount<=0},reduceClass]"  @click="reduce"></i>
+      <input type="number" readonly :class="{hidden:cal_dishe.cartCount<=0}" v-model="cal_dishe.cartCount">
+      <i class="cdicon-add" @click="add"></i>
+  </div>
 </template>
  
 <script>
@@ -13,37 +11,28 @@ export default {
   name: 'calculation',
   data () {
     return {
-     self_count:this.count,
+     cal_dishe:this.dishe,
      reduceClass:'cdicon-dec',
     }
   },
   props:{
-    totalCount:{
-      type:Number,
-      default:0,
-    },
-    count:{
-      type:Number,
-      default:0,
-    },
     dishe:Object
   },
   methods:{
     add:function(){
-          this.self_count++;
-          this.dishe['currentCount']=this.self_count;
-          this.dishe['changedCount']=1;
-          this.$emit('countChange',this.dishe);
+          this.cal_dishe.cartCount++;
+           this.$emit('cartCountChange',this.cal_dishe);
+
     },
     reduce:function(){
-      if(this.self_count>0){
-          this.self_count--;
-           this.dishe['currentCount']=this.self_count;
-           this.dishe['changedCount']=-1;
-           this.$emit('countChange',this.dishe);
+      if(this.cal_dishe.cartCount>0){
+           this.cal_dishe.cartCount--;
+           this.$emit('cartCountChange',this.cal_dishe);
       }
     }
+
   },
+   
 }
 </script>
 <style lang="scss" scoped>

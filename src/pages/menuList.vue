@@ -2,44 +2,13 @@
 <div class="page-group">
         <div class="page menu-list">
             <div class="scroll-view" style="">
-                <div class="type-left-side"  >
-                    <div id="left-side-wrapper">
-                        <ul class="content-inner">
-                            <li class="selected"><i class="cdicon-hot"></i>特惠商品</li>
-                            <li>招牌菜品1</li>
-                            <li>招牌菜品2</li>
-                            <li>招牌菜品3</li>
-                            <li>招牌菜品4</li>
-                            <li>招牌菜品5</li>
-                            <li>招牌菜品6</li>
-                            <li>招牌菜品7</li>
-                            <li>招牌菜品8</li>
-                            <li>招牌菜品9</li>
-                            <li>招牌菜品10</li>
-                            <li>招牌菜品11</li>
-                            <li>招牌菜品12</li>
-                            <li>招牌菜品13</li>
-                            <li>招牌菜品14</li>
-                            <li>招牌菜品15</li>
-                            <li>招牌菜品16</li>
-                            <li>招牌菜品17</li>
-                            <li>招牌菜品18</li>
-                            <li>招牌菜品19</li>
-                            <li>招牌菜品20</li>
-                            <li>招牌菜品21</li>
-                            <li>招牌菜品22</li>
-                            <li>招牌菜品23</li>
-                            <li>招牌菜品24</li>
-                        </ul>
-                    </div>
-                    
-                </div>
+                <dishTypeList :data="disheTypes" />
                 <div class="page-body">
                     <div class="menu-list-container">
-                        <goodsList />   
+                        <goodsList  @cartCountChange="cartCountChange" :data="disheTypes"/>   
                     </div>
                 </div> 
-            <shopping-cart :total-count="totalCount"></shopping-cart>
+            <shopping-cart :total-count="totalCount" :data="disheTypes"></shopping-cart>
             </div>
         </div>
     </div>
@@ -48,17 +17,73 @@
 <script>
 import shoppingCart from '../../src/components/shoppingCart';
 import goodsList from '../../src/components/goodsList';
+import dishTypeList from '../../src/components/dishTypeList';
 export default { 
   name: 'menuList', 
   data () { 
     return {
-     totalCount:0,
+            "disheTypes": [
+                    {
+                    "dishTypeId": "1",
+                    "dishTypeName": "湘菜",
+                   "dishes": [
+                                {
+                                    "dishId": "20170720160334153750472182894826",
+                                    "dishName": "鱼香肉丝",
+                                    "dishTypeId": "1",
+                                    "dishTypeName": "湘菜",
+                                    "id": "",
+                                    "itemActivity": {
+                                        "outBizNo": "20170721112251127154148946723957",
+                                        "voucherWorthValue": 1.00
+                                    },
+                                    "pic": "http://p.yunzongnet.com/yzbmp/M00/04/61/rBIyFFlwYnGAQqHZAAEptQCLnrc937.jpg",
+                                    "price": 21.00,
+                                    "cartCount": 0,
+                                    
+                                },
+                                {
+                                    "dishId": "20170720160334153750472182894827",
+                                    "dishName": "宫保鸡丁",
+                                    "dishTypeId": "1",
+                                    "dishTypeName": "湘菜",
+                                    "id": "",
+                                    "itemActivity": {
+                                        "outBizNo": "20170721112251127154148946723957",
+                                        "voucherWorthValue": 1.00
+                                    },
+                                    "pic": "http://p.yunzongnet.com/yzbmp/M00/04/61/rBIyFFlwYnGAQqHZAAEptQCLnrc937.jpg",
+                                    "price": 22.00,
+                                     "cartCount": 0,
+                                    
+                                }
+                            
+                        ]
+                    }
+                ],
+                "totalCount":0
     }
   },
-   components: {
+  components: {
         goodsList,
-        shoppingCart
-    },
+        shoppingCart,
+        dishTypeList,
+  },
+  methods: {
+    cartCountChange:function(changedCount){
+        this.disheTypes.forEach( function(disheType, index1) {
+            if(disheType['dishTypeId']===changedCount['dishTypeId']){
+                disheType['dishes'].forEach( function(dish, index2) {
+                  if(dish['dishId']===changedCount['dishId']){
+                     dish['cartCount']=changedCount['cartCount'];
+                  }
+                });
+            }
+
+           
+        });
+    }
+  },
 }
 </script>
 
