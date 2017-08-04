@@ -1,25 +1,45 @@
 <template>
            <div class="type-left-side"  >
-                    <div id="left-side-wrapper">
+                    <div id="left-side-wrapper" ref="leftWrapper">
                         <ul class="content-inner">
-                        <template v-for="dishType in disheTypes">
-                           <li v-if="dishType.isDiscount" class="selected"><i class="cdicon-hot"></i>{{dishType.dishTypeName}}</li>
-                            <li v-else>{{dishType.dishTypeName}}</li>
-                        </template>
+                            <li v-for="(dishType,index) in disheTypes" :class="{selected:dishTypeIndex===index}" @click="selectDishtType(index)">{{dishType.dishTypeName}}</li>
                         </ul>
                     </div>
-                </div>
+                </div>  
 </template>
  
 <script>
+ import BScroll from 'better-scroll';
 export default {
   name: 'dishTypeList',
   data () {
     return {
-    disheTypes:this.data
+      selected:'selected',
+      disheTypes:this.data,
+      dishTypeIndex:0,
     }
   },
    props:['data'],
+   methods:{
+    selectDishtType:function(index){
+      this.dishTypeIndex=index;
+        this.$parent.$emit('selectDishtType',index);
+    },
+    initScroll:function(){
+      this.dishtTypeScroll = new BScroll(this.$refs.leftWrapper, {
+           click: true
+      });
+    }
+   },
+   mounted:function(){
+      this.initScroll();
+   }  
+   ,watch:{
+    data:function(){
+      this.disheTypes=this.data;
+    }
+  }
+
 }
 </script>
 <style lang="scss" scoped>

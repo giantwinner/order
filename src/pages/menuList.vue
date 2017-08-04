@@ -1,6 +1,5 @@
 <template>
-<div class="page-group">
-        <div class="page menu-list">
+        <div class="menu-list">
             <div class="scroll-view" style="">
                 <dishTypeList :data="disheTypes" />
                 <div class="page-body">
@@ -9,59 +8,24 @@
                     </div>
                 </div> 
             <shopping-cart :total-count="totalCount" :data="disheTypes"></shopping-cart>
+            　　
             </div>
         </div>
-    </div>
 </template>
 
 <script>
 import shoppingCart from '../../src/components/shoppingCart';
 import goodsList from '../../src/components/goodsList';
 import dishTypeList from '../../src/components/dishTypeList';
+import Vue from 'vue';
+import VueResource from 'vue-resource';
+Vue.use(VueResource);
 export default { 
   name: 'menuList', 
   data () { 
     return {
-            "disheTypes": [
-                    {
-                    "dishTypeId": "1",
-                    "dishTypeName": "湘菜",
-                   "dishes": [
-                                {
-                                    "dishId": "20170720160334153750472182894826",
-                                    "dishName": "鱼香肉丝",
-                                    "dishTypeId": "1",
-                                    "dishTypeName": "湘菜",
-                                    "id": "",
-                                    "itemActivity": {
-                                        "outBizNo": "20170721112251127154148946723957",
-                                        "voucherWorthValue": 1.00
-                                    },
-                                    "pic": "http://p.yunzongnet.com/yzbmp/M00/04/61/rBIyFFlwYnGAQqHZAAEptQCLnrc937.jpg",
-                                    "price": 21.00,
-                                    "cartCount": 0,
-                                    
-                                },
-                                {
-                                    "dishId": "20170720160334153750472182894827",
-                                    "dishName": "宫保鸡丁",
-                                    "dishTypeId": "1",
-                                    "dishTypeName": "湘菜",
-                                    "id": "",
-                                    "itemActivity": {
-                                        "outBizNo": "20170721112251127154148946723957",
-                                        "voucherWorthValue": 1.00
-                                    },
-                                    "pic": "http://p.yunzongnet.com/yzbmp/M00/04/61/rBIyFFlwYnGAQqHZAAEptQCLnrc937.jpg",
-                                    "price": 22.00,
-                                     "cartCount": 0,
-                                    
-                                }
-                            
-                        ]
-                    }
-                ],
-                "totalCount":0
+                       "disheTypes":[],
+                "totalCount":0,
     }
   },
   components: {
@@ -82,7 +46,21 @@ export default {
 
            
         });
-    }
+    },
+  },
+  created(){
+        var _self=this;
+         this.$http.get('../../static/data.json').then((res) => {
+                    if(res.statusText === 'OK') {
+                        res.data.resultObject.disheTypes.forEach( function(ele, index) {
+                           ele.dishes.forEach( function(dishe, index) {
+                               dishe['cartCount']=0;
+                           });
+                        });
+                        _self.disheTypes=res.data.resultObject.disheTypes;
+                    }
+                        
+                });
   },
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
 
-                        <div class="goods-wrap" id="wrapper">
+                        <div class="goods-wrap" id="wrapper" ref="goodsList">
                             <div class="content-inner">
                                 <template v-for="disheType in goodsList">
                                     <ul class="goods-list">
@@ -23,6 +23,7 @@
 
 <script>
 import calculation from '../../src/components/calculation';
+ import BScroll from 'better-scroll';
 export default { 
   name: 'goodsList', 
    data () {
@@ -40,11 +41,49 @@ export default {
     cartCountChange:function(data){
          this.$emit('cartCountChange',data);
     }
+     ,initScroll:function(){
+      this.goodsListScroll = new BScroll(this.$refs.goodsList, {
+                    probeType: 3,
+                    deceleration: 0.001,
+                    bounce: false,
+                    swipeTime: 2000,
+                    click: true,
+      });
+       console.log(this.goodsListScroll)
+      this.goodsListScroll.on('scroll', (pos) => {
+                        //scrollY接收变量
+                       
+                        this.scrollY = Math.abs(Math.round(pos.y));
+                    })
+    }
   },
+
     components: {
         calculation
     },
     props:['data'],
+   created(){
+      this.$parent.$on('selectDishtType',(index)=>{
+
+        var el=document.getElementsByClassName('goods-list')[index];
+        console.log(el);
+
+         this.goodsListScroll.scrollToElement(el,300); 
+      })
+   },
+   mounted(){
+    this.$nextTick(() => {
+                            this.initScroll();
+                        })
+   }
+  ,watch:{
+    data:function(){
+      this.goodsList=this.data;
+      this.$nextTick(() => {
+                            this.goodsListScroll.refresh();
+                        })
+    }
+  }
 }
 </script>
 

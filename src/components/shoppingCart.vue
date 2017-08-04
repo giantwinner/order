@@ -79,24 +79,37 @@ export default {
     cTotalCount:function(){
       var self=this;
       self.totalCount=0;
+      if(this.data.length){
        this.data.forEach( function(disheType, index1) {
               disheType.dishes.forEach( function(dishe, index2) {
                   self.totalCount+=dishe['cartCount'];
               });
         });
+      }
+
+      if (self.totalCount===0) {
+         this.isShow=false;
+      }
        return this.totalCount;
     },
     cTotalPrice:function(){
       var self=this;
       this.totalPrice=0;
+      if(this.data.length){
        this.data.forEach( function(disheType, index1) {
               disheType.dishes.forEach( function(dishe, index2) {
                   self.totalPrice+=dishe['price']*dishe['cartCount'];
               });
         });
+     }
        return this.totalPrice;
     }
-  },
+  }
+  ,watch:{
+    data:function(){
+      this.cartDatas=this.data;
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
