@@ -1,470 +1,178 @@
 @import "remCalc";
 @import "colors";
 @import "public";
-.menu-list {
-  background: #fff;
-  %narrow-border {
+
+%narrow-border {
+  position: relative;
+  &:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    height: 1px;
+    border-bottom: 1px solid $color-border;
+    width: 100%;
+    transform: scaleY(0.5);
+    transform-origin: 0 0;
+  }
+}
+
+%select-amount {
+  position: absolute;
+  @include remCalc(bottom, 14);
+  @include remCalc(right, 30);
+  input {
+    @include remCalc(width, 60);
+    @include remCalc(font-size, 30);
+    text-align: center;
+    @include remCalc(padding, 0, 2);
+    @extend %box-sizing;
+    float: left;
+  }
+  i {
+    color: $color-blue;
+    @include remCalc(font-size, 44);
+    float: left;
     position: relative;
     &:after {
+      content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      content: "";
-      height: 1px;
-      border-bottom: 1px solid $color-border;
-      width: 100%;
-      transform: scaleY(0.5);
-      transform-origin: 0 0;
+      @include remCalc(left, -20);
+      @include remCalc(right, -20);
+      @include remCalc(top, -20);
+      @include remCalc(bottom, -20);
     }
   }
-  %select-amount {
-    position: absolute;
-    @include remCalc(bottom, 14);
-    @include remCalc(right, 30);
-    input {
-      @include remCalc(width, 60);
-      @include remCalc(font-size, 30);
-      text-align: center;
-      @include remCalc(padding, 0, 2);
-      @extend %box-sizing;
-      float: left;
-    }
-    i {
-      color: $color-blue;
-      @include remCalc(font-size, 44);
-      float: left;
-      position: relative;
-      &:after {
-        content: '';
-        position: absolute;
-        @include remCalc(left, -20);
-        @include remCalc(right, -20);
-        @include remCalc(top, -20);
-        @include remCalc(bottom, -20);
-      }
-    }
-  }
-  .type-left-side {
-    text-align: center;
-    background: #f8f8f8;
-    color: #666;
-    @include remCalc(width, 170);
-    @include remCalc(padding-bottom, 160);
-    @include remCalc(font-size, 26);
-    height: 100%;
-    @extend %box-sizing;
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 1;
-    overflow-y: scroll;
-    #left-side-wrapper{
-      height:100%;
-      overflow:hidden;
-    }
-    li {
-      line-height: 1.5;
-      @include remCalc(padding, 20, 0);
-      position: relative;
-      i {
-        position: absolute;
-        @include remCalc(left, 4);
-        @include remCalc(top, 26);
-        color: $color-red;
-      }
-      &.selected {
-        background: #fff;
-        color: $color-blue;
+}
+
+.goods-wrap {
+  background: #fff;
+  @include remCalc(padding, 0, 0, 0, 170);
+  @include remCalc(width, 580);
+  height: 100%;
+  overflow: hidden;
+  .goods-list {
+    .kind-type-wrap {
+      @include remCalc(height, 50);
+      .kind-type {
+        background: #f8f8f8;
+        font-weight: normal;
+        color: #999;
+        @include remCalc(width, 580);
+        @include remCalc(font-size, 26);
+        @include remCalc(line-height, 50);
+        @include remCalc(padding-left, 20);
         position: relative;
+        z-index: 2;
+        &.fix-top {
+          position: fixed;
+          top: 0;
+        }
         &:before {
           content: "";
           position: absolute;
-          top: 0;
+          @include remCalc(width, 6);
+          @include remCalc(height, 28);
+          background: #ddd;
           left: 0;
-          @include remCalc(width, 4);
-          height: 100%;
-          background: $color-blue;
+          @include remCalc(top, 11);
         }
       }
     }
-  }
-  .menu-list-container {
-    height: inherit;
-    overflow: hidden;
-    box-sizing: border-box;
-    @include remCalc(padding-bottom,100);
-    .goods-wrap {
-      background: #fff;
-      @include remCalc(padding, 0, 0, 0, 170);
-      @include remCalc(width, 580);
-      height: 100%;
-      overflow:hidden;
-      .goods-list {
-        .kind-type-wrap {
-          @include remCalc(height, 50);
-          .kind-type {
-            background: #f8f8f8;
-            font-weight: normal;
-            color: #999;
-            @include remCalc(width, 580);
-            @include remCalc(font-size, 26);
-            @include remCalc(line-height, 50);
-            @include remCalc(padding-left, 20);
-            position: relative;
-            z-index: 2;
-            &.fix-top {
-              position: fixed;
-              top: 0;
-            }
-            &:before {
-              content: "";
-              position: absolute;
-              @include remCalc(width, 6);
-              @include remCalc(height, 28);
-              background: #ddd;
-              left: 0;
-              @include remCalc(top, 11);
-            }
-          }
-        }
-        .kind-type-wrap:first-child {
-          & + li:after {
-            display: none;
-          }
-        }
-        > li {
-          @extend %narrow-border;
-          @include remCalc(padding, 20, 30, 20, 0);
-          @include remCalc(margin-left, 20);
-          @extend %box-sizing;
-          position: relative;
-          &:first-child {
-            background: #000;
-          }
-          //&:after {
-          //  position: absolute;
-          //  top: auto !important;
-          //  bottom:0;
-          //}
-          .pic {
-            @include remCalc(width, 120);
-            @include remCalc(height, 120);
-          }
-          .name {
-            position: absolute;
-            @include remCalc(top, 16);
-            @include remCalc(left, 140);
-            @include remCalc(width, 390);
-            @extend %text-overflow;
-            @include remCalc(font-size, 30);
-            color: #333;
-          }
-          .price {
-            position: absolute;
-            @include remCalc(bottom, 12);
-            @include remCalc(left, 140);
-            color: $color-red;
-            @include remCalc(font-size, 36);
-            i {
-              font-style: normal;
-              @include remCalc(font-size, 30);
-            }
-          }
-          .discount {
-            @include remCalc(font-size, 22);
-            position: absolute;
-            @include remCalc(top, 66);
-            @include remCalc(left, 140);
-            @include remCalc(height, 26);
-            @include remCalc(line-height, 26);
-            @include remCalc(border-radius, 2);
-            border: 1px solid $color-blue;
-            color: $color-blue;
-            overflow: hidden;
-
-            > i {
-              @include remCalc(height, 26);
-              color: #fff;
-              background: $color-blue;
-              display: inline-block;
-              @include remCalc(padding, 2, 8, 0, 8);
-              font-style: normal;
-            }
-            > span {
-              @include remCalc(padding, 0, 8);
-            }
-
-          }
-
-          .select-amount {
-            @extend %select-amount;
-          }
-          .specifications {
-            position: absolute;
-            @include remCalc(bottom, 20);
-            @include remCalc(right, 50);
-            @include remCalc(border-radius, 22);
-            @include remCalc(font-size, 22);
-            @include remCalc(padding, 6, 16);
-            color: $color-blue;
-            border: 1px solid $color-blue;
-            i {
-              position: absolute;
-              font-style: normal;
-              color: #fff;
-              background: $color-red;
-              @include remCalc(font-size, 20);
-              @include remCalc(border-radius, 16);
-              @include remCalc(padding, 0, 10);
-              @include remCalc(line-height, 32);
-              @include remCalc(top, -16);
-              @include remCalc(right, -16);
-            }
-          }
-        }
+    .kind-type-wrap:first-child {
+      & + li:after {
+        display: none;
       }
     }
-
-  }
-  .shopping-cart {
-    background: #575b64;
-    position:fixed;
-    bottom:0;
-    width:100%;
-    left:0;
-    z-index: 999;
-    @include remCalc(height, 100);
-    @include remCalc(line-height, 100);
-    text-align: center;
-    color: #fff;
-    .cart-icon {
-      position: absolute;
-      @include remCalc(width, 100);
-      @include remCalc(height, 100);
-      top: -50%;
-      @include remCalc(left, 30);
+    > li {
+      @extend %narrow-border;
+      @include remCalc(padding, 20, 30, 20, 0);
+      @include remCalc(margin-left, 20);
       @extend %box-sizing;
-      @include remCalc(padding-top, 10);
-      border-radius: 50%;
-      background: linear-gradient(-60deg, #2b86ef, #2db9ff);
-      box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
-      i {
-        @include remCalc(font-size, 54);
+      position: relative;
+      &:first-child {
+        background: #000;
       }
-      &:after {
-        content: "";
+      //&:after {
+      //  position: absolute;
+      //  top: auto !important;
+      //  bottom:0;
+      //}
+      .pic {
+        @include remCalc(width, 120);
+        @include remCalc(height, 120);
+      }
+      .name {
         position: absolute;
-        @include remCalc(left, -30);
-        @include remCalc(right, -80);
-        @include remCalc(top, -30);
-        @include remCalc(bottom, -50);
+        @include remCalc(top, 16);
+        @include remCalc(left, 140);
+        @include remCalc(width, 390);
+        @extend %text-overflow;
+        @include remCalc(font-size, 30);
+        color: #333;
       }
-      .amount {
+      .price {
         position: absolute;
-        display: inline-block;
-        @include remCalc(font-size, 20);
-        @include remCalc(top, -2);
-        @include remCalc(right, -14);
-        @include remCalc(line-height, 24);
-        @include remCalc(border-radius, 18);
-        @include remCalc(padding, 2, 10);
-        color: #fff;
-        background: $color-red;
-      }
-    }
-    .total {
-      position: absolute;
-      @include remCalc(left, 140);
-      overflow: hidden;
-      @include remCalc(font-size, 28);
-      span {
+        @include remCalc(bottom, 12);
+        @include remCalc(left, 140);
+        color: $color-red;
         @include remCalc(font-size, 36);
-      }
-    }
-    .to-checout {
-      position: absolute;
-      @include remCalc(width, 280);
-      right: 0;
-      background: $color-blue;
-      color: inherit;
-      @include remCalc(font-size, 32);
-    }
-    &.empty{
-      .cart-icon{
-        background: #9fa5ad;
-      }
-      .to-checout{
-        background: #9fa5ad;
-        color: rgba(255,255,255,0.4);
-      }
-    }
-  }
-  .shopping-cart-list-container {
-    // transform: translate3d(0, 100%, 0);
-    visibility:hidden;
-    position: fixed;
-    top: 0;
-    z-index: 997;
-    width: 100%;
-    height: 100%;
-    .layer-overlay {
-      // visibility: visible;
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      z-index: 998;
-      visibility: hidden;
-      opacity: 0;
-      // transition-duration: 400ms;
-      transition:opacity 0.4s,visibility 0.4s;
-    }
-    .layer-overlay-visible {
-      // visibility: visible;
-      // opacity: 1;
-    }
-    .shopping-cart-list {
-      width:100%;
-      box-sizing: border-box;
-      transform: translate3d(0, 100%, 0);
-      background: #fff;
-      position: absolute;
-      z-index: 999;
-      @include remCalc(bottom, 100)
-      @include remCalc(padding-left, 30);
-      .top {
-        @include remCalc(height, 90);
-        @include remCalc(line-height, 90);
-        width: 100%;
-        span {
-          color: #333;
+        i {
+          font-style: normal;
           @include remCalc(font-size, 30);
         }
-        .clear-cart {
-          @include remCalc(font-size, 28);
-          color: #ccc;
-          float: right;
-          position: relative;
-          &:after {
-            content: '';
-            position: absolute;
-            @include remCalc(top, -20);
-            @include remCalc(bottom, -4);
-            @include remCalc(left, -60);
-            @include remCalc(right, -10);
-          }
-          @include remCalc(padding-right, 30);
-          i {
-            @include remCalc(padding-right, 10);
-          }
+      }
+      .discount {
+        @include remCalc(font-size, 22);
+        position: absolute;
+        @include remCalc(top, 66);
+        @include remCalc(left, 140);
+        @include remCalc(height, 26);
+        @include remCalc(line-height, 26);
+        @include remCalc(border-radius, 2);
+        border: 1px solid $color-blue;
+        color: $color-blue;
+        overflow: hidden;
+
+        > i {
+          @include remCalc(height, 26);
+          color: #fff;
+          background: $color-blue;
+          display: inline-block;
+          @include remCalc(padding, 2, 8, 0, 8);
+          font-style: normal;
+        }
+        > span {
+          @include remCalc(padding, 0, 8);
+        }
+
+      }
+
+      .select-amount {
+        @extend %select-amount;
+      }
+      .specifications {
+        position: absolute;
+        @include remCalc(bottom, 20);
+        @include remCalc(right, 50);
+        @include remCalc(border-radius, 22);
+        @include remCalc(font-size, 22);
+        @include remCalc(padding, 6, 16);
+        color: $color-blue;
+        border: 1px solid $color-blue;
+        i {
+          position: absolute;
+          font-style: normal;
+          color: #fff;
+          background: $color-red;
+          @include remCalc(font-size, 20);
+          @include remCalc(border-radius, 16);
+          @include remCalc(padding, 0, 10);
+          @include remCalc(line-height, 32);
+          @include remCalc(top, -16);
+          @include remCalc(right, -16);
         }
       }
-      ul {
-        @include remCalc(padding, 0, 0, 30, 0);
-        @include remCalc(max-height, 700);
-        overflow-y: scroll;
-        > li {
-          @extend %narrow-border;
-          @include remCalc(padding, 28, 30, 28, 0);
-          @include remCalc(font-size, 28);
-          @extend %flex;
-          align-items: center;
-          .select-amount {
-            @extend %select-amount;
-            position: static;
-          }
-          .goods-name {
-            @include remCalc(width, 410);
-            color: #666;
-            @extend %text-overflow;
-            .gg {
-              @include remCalc(font-size, 22);
-              @include remCalc(padding-top, 4);
-              color: #ccc;
-            }
-          }
-          .goods-amount {
-            @include remCalc(width, 80);
-            color: #ccc;
-          }
-          .total-money {
-            @include remCalc(width, 130);
-            color: #666;
-          }
-        }
-      }
     }
-  }
-  .layer-in {
-    // transition-duration: 300ms;
-    // transform: translate3d(0, 0, 0);
-    // display:block;
-    visibility:visible;
-    .shopping-cart-list{
-      transition-duration: 300ms;
-      transform: translate3d(0, 0, 0);
-    }
-    .layer-overlay{
-          opacity: 1;
-          visibility:visible;
-
-
-    }
-  }
-  .layer-out {
-    // transition-duration: 300ms;
-    // transform: translate3d(0, 100%, 0);
-    // display:none;
-    visibility:hidden;
-     .shopping-cart-list{
-      transition-duration: 300ms;
-      transform: translate3d(0, 100%, 0);
-    }
-    .layer-overlay{
-          opacity: 0;
-          visibility:hidden;
-    }
-  }
-}
-
-.u-flyer {
-  display: block;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  position: fixed;
-  z-index: 9999;
-  background: red
-}
-
-.shopCartAnimate {
-  -webkit-animation: shopCart .5s 0s ease-in-out;
-  animation: shopCart .5s 0s ease-in-out;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-  -webkit-animation-iteration-count: 1;
-  animation-iteration-count: 1
-}
-@keyframes shopCart {
-  0% {
-    -webkit-transform: scale(1);
-    transform: scale(1)
-  }
-
-  10% {
-    -webkit-transform: scale(1.2);
-    transform: scale(1.2)
-  }
-
-  50% {
-    -webkit-transform: scale(0.8);
-    transform: scale(0.8)
-  }
-
-  100% {
-    -webkit-transform: scale(1);
-    transform: scale(1)
   }
 }

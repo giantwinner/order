@@ -1,33 +1,35 @@
 @import "remCalc";
 @import "colors";
 @import "public";
-    .hidden{
-      visibility: hidden; 
-    }
-   .select-amount {
-    position: static;
-    @include remCalc(bottom, 14);
-    @include remCalc(right, 30);
-    input {
-      @include remCalc(width, 60);
-      @include remCalc(font-size, 30);
-      text-align: center;
-      @include remCalc(padding, 0, 2);
-      @extend %box-sizing;
-      float: left;
-    }
-    i {
-      color: $color-blue;
-      @include remCalc(font-size, 44);
-      float: left;
-      position: relative;
-      &:after {
-        content: '';
-        position: absolute;
-        @include remCalc(left, -20);
-        @include remCalc(right, -20);
-        @include remCalc(top, -20);
-        @include remCalc(bottom, -20);
-      }
+
+.hidden {
+  visibility: hidden;
+}
+
+.select-amount {
+  position: static;
+  @include remCalc(bottom, 14);
+  @include remCalc(right, 30);
+  input {
+    @include remCalc(width, 60);
+    @include remCalc(font-size, 30);
+    text-align: center;
+    @include remCalc(padding, 0, 2);
+    @extend %box-sizing;
+    float: left;
+  }
+  i {
+    color: $color-blue;
+    @include remCalc(font-size, 44);
+    float: left;
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      @include remCalc(left, -20);
+      @include remCalc(right, -20);
+      @include remCalc(top, -20);
+      @include remCalc(bottom, -20);
     }
   }
+}

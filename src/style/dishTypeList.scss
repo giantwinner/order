@@ -1,47 +1,48 @@
 @import "remCalc";
 @import "colors";
 @import "public";
-    .type-left-side {
-    text-align: center;
-    background: #f8f8f8;
-    color: #666;
-    @include remCalc(width, 170);
-    @include remCalc(padding-bottom, 160);
-    @include remCalc(font-size, 26);
+
+.type-left-side {
+  text-align: center;
+  background: #f8f8f8;
+  color: #666;
+  @include remCalc(width, 170);
+  @include remCalc(padding-bottom, 160);
+  @include remCalc(font-size, 26);
+  height: 100%;
+  @extend %box-sizing;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  overflow-y: scroll;
+  #left-side-wrapper {
     height: 100%;
-    @extend %box-sizing;
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 1;
-    overflow-y: scroll;
-    #left-side-wrapper{
-      height:100%;
-      overflow:hidden;
+    overflow: hidden;
+  }
+  li {
+    line-height: 1.5;
+    @include remCalc(padding, 20, 0);
+    position: relative;
+    i {
+      position: absolute;
+      @include remCalc(left, 4);
+      @include remCalc(top, 26);
+      color: $color-red;
     }
-    li {
-      line-height: 1.5;
-      @include remCalc(padding, 20, 0);
+    &.selected {
+      background: #fff;
+      color: $color-blue;
       position: relative;
-      i {
+      &:before {
+        content: "";
         position: absolute;
-        @include remCalc(left, 4);
-        @include remCalc(top, 26);
-        color: $color-red;
-      }
-      &.selected {
-        background: #fff;
-        color: $color-blue;
-        position: relative;
-        &:before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          @include remCalc(width, 4);
-          height: 100%;
-          background: $color-blue;
-        }
+        top: 0;
+        left: 0;
+        @include remCalc(width, 4);
+        height: 100%;
+        background: $color-blue;
       }
     }
   }
+}
