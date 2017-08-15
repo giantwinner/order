@@ -8,10 +8,12 @@
             <h1 class="kind-type">{{disheType.dishTypeName}}({{disheType.dishes.length}})</h1></div>
           <template v-for="dishe in disheType.dishes">
             <li>
-              <img :src="pic(dishe.pic)" alt="" class="pic">
-              <div class="name">{{dishe.dishName}}</div>
-              <div class="price"><i>￥</i>{{dishe.price}}</div>
-              <calculation :dishe="dishe" @cartCountChange="cartCountChange"/>
+              <router-link :to="{ name: 'goodsDetails', params: { dishId: dishe.dishId } }">
+                <img :src="pic(dishe.pic)" alt="" class="pic">
+                <div class="name">{{dishe.dishName}}</div>
+                <div class="price"><i>￥</i>{{dishe.price}}</div>
+                <calculation :dishe="dishe" @cartCountChange="cartCountChange"/>
+              </router-link>
             </li>
           </template>
         </ul>

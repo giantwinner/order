@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import menuList from '@/pages/menuList'
+import goodsDetails from '@/pages/goodsDetails'
 
 Vue.use(Router)
 
@@ -10,6 +11,11 @@ export default new Router({
       path: '/',
       name: 'menuList',
       component: menuList
+    },
+    {
+      path: '/goodsDetails/:dishId',
+      name: 'goodsDetails',
+      component: goodsDetails
     }
   ]
 })

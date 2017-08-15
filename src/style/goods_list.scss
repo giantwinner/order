@@ -90,14 +90,9 @@
       @include remCalc(margin-left, 20);
       @extend %box-sizing;
       position: relative;
-      &:first-child {
-        background: #000;
+      a{
+        display: block;
       }
-      //&:after {
-      //  position: absolute;
-      //  top: auto !important;
-      //  bottom:0;
-      //}
       .pic {
         @include remCalc(width, 120);
         @include remCalc(height, 120);
@@ -147,10 +142,13 @@
         }
 
       }
-
-      .select-amount {
-        @extend %select-amount;
+      section{
+        position: absolute;
+        @include remCalc(bottom, 14);
+        @include remCalc(right, 30);
       }
+
+
       .specifications {
         position: absolute;
         @include remCalc(bottom, 20);

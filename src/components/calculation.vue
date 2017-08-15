@@ -1,9 +1,11 @@
 <template>
-  <div class="select-amount">
-    <i :class="[{hidden:cal_dishe.cartCount<=0},reduceClass]" @click="reduce"></i>
-    <input type="number" readonly :class="{hidden:cal_dishe.cartCount<=0}" v-model="cal_dishe.cartCount">
-    <i class="cdicon-add" @click="add"></i>
-  </div>
+  <section>
+    <div class="select-amount">
+      <i :class="[{hidden:cal_dishe.cartCount<=0},reduceClass]" @click.prevent="reduce"></i>
+      <input type="number" readonly :class="{hidden:cal_dishe.cartCount<=0}" v-model="cal_dishe.cartCount">
+      <i class="cdicon-add" @click.prevent="add"></i>
+    </div>
+  </section>
 </template>
 
 <script>
