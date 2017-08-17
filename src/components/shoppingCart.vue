@@ -5,22 +5,20 @@
       <div class="shopping-cart-list">
         <div class="top">
           <span>购物车</span>
-          <div class="clear-cart" @click="clearCart">
+          <div class="clear-cart" @click="CLEAR_CART">
             <i class="cdicon-empty"></i>清空
           </div>
         </div>
-        <ul>
-          <template v-for="cartData in cartDatas">
-            <template v-for="dishes in cartData.dishes">
-              <li :key="dishes.dishId" v-if="dishes.cartCount>0">
+        <ul>{{cartList}}
+            <template v-for="dishes in cartList">
+              <li :key="dishes.dishId" v-if="dishes.count>0">
                 <div class="goods-name">
                   {{dishes.dishName}}
                 </div>
                 <div class="total-money">￥{{dishes.price}}</div>
-                <calculation :dishe="dishes" @cartCountChange="cartCountChange"/>
+                <calculation :dishe="dishes"/>
               </li>
             </template>
-          </template>
         </ul>
       </div>
     </div>
@@ -36,6 +34,7 @@
 </template>
 
 <script>
+  import {mapState, mapMutations} from 'vuex'
   import calculation from '../../src/components/calculation';
   export default {
     name: 'shoppingCart',
@@ -54,6 +53,9 @@
       }
     },
     methods: {
+      ...mapMutations([
+        'CLEAR_CART',
+      ]),
       toggleCart: function () {
         if (this.totalCount > 0) {
           this.isShow = !this.isShow;
@@ -67,49 +69,22 @@
         });
         this.isShow = false;
       },
-      cartCountChange: function (data) {
-        this.$emit('cartCountChange', data);
-      },
     },
-    props: ['data'],
     components: {
       calculation
     },
     computed: {
+      ...mapState(['cartList']),
       cTotalCount: function () {
-        var self = this;
-        self.totalCount = 0;
-        if (this.data.length) {
-          this.data.forEach(function (disheType, index1) {
-            disheType.dishes.forEach(function (dishe, index2) {
-              self.totalCount += dishe['cartCount'];
-            });
-          });
-        }
-
-        if (self.totalCount === 0) {
-          this.isShow = false;
-        }
-        return this.totalCount;
+        this.totalCount=1;
+        return 1;
       },
       cTotalPrice: function () {
-        var self = this;
-        this.totalPrice = 0;
-        if (this.data.length) {
-          this.data.forEach(function (disheType, index1) {
-            disheType.dishes.forEach(function (dishe, index2) {
-              self.totalPrice += dishe['price'] * dishe['cartCount'];
-            });
-          });
-        }
-        return this.totalPrice;
+
+        return 0;
       }
     },
-    watch: {
-      data: function () {
-        this.cartDatas = this.data;
-      }
-    }
+
   }
 </script>
 <style lang="scss" scoped>
