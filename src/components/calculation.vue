@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import {mapState, mapMutations} from 'vuex'
+  import {mapGetters, mapMutations} from 'vuex'
   export default {
     name: 'calculation',
     data () {
@@ -28,26 +28,31 @@
       ]),
       add: function () {
         var dishe = this.dishe;
-        this.ADD_CART({dishTypeId:dishe.dishTypeId, dishId:dishe.dishId,dishName: dishe.dishName,price:dishe.price});
+        this.ADD_CART({
+          dishTypeId: dishe.dishTypeId,
+          dishId: dishe.dishId,
+          dishName: dishe.dishName,
+          price: dishe.price
+        });
       },
       reduce: function () {
         var dishe = this.dishe;
-        this.REDUCE_CART({dishTypeId:dishe.dishTypeId,dishId:dishe.dishId});
+        this.REDUCE_CART({dishTypeId: dishe.dishTypeId, dishId: dishe.dishId});
       }
     },
     computed: {
-      ...mapState(['cartList']),
+      ...mapGetters({cartList: 'cartListArr'}),
       cartCount: function () {
         let cart = this.cartList;
-        var dishTypeId = this.dishe.dishTypeId;
-        var dishId = this.dishe.dishId;
-        let dishType = cart[dishTypeId] = (cart[dishTypeId] || {});
-        let item = dishType[dishId] = (dishType[dishId] || {});
-        if (item[dishId]) {
-          return item[dishId]['count'];
-        } else {
-          return 0;
-        }
+        let dishId = this.dishe.dishId;
+        let count = 0;
+        this.cartList.forEach(item => {
+          if (item[dishId] == dishId) {
+            count = cart['count'];
+          }
+        });
+        console.log(cart.count);
+        return count;
       }
     }
 

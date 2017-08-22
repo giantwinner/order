@@ -41,7 +41,7 @@ export default {
     if (item && item[dishId]) {
       if (item[dishId]['count'] > 0) {
         item[dishId]['count']--;
-        state.cartList = {...cart};
+        //state.cartList = {...cart};
         // //存入localStorage
         // setStore('buyCart', state.cartList);
       } else {

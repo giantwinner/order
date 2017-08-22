@@ -5,20 +5,20 @@
       <div class="shopping-cart-list">
         <div class="top">
           <span>购物车</span>
-          <div class="clear-cart" @click="CLEAR_CART">
+          <div class="clear-cart" @click="clearCart">
             <i class="cdicon-empty"></i>清空
           </div>
         </div>
-        <ul>{{cartList}}
-            <template v-for="dishes in cartList">
-              <li :key="dishes.dishId" v-if="dishes.count>0">
-                <div class="goods-name">
-                  {{dishes.dishName}}
-                </div>
-                <div class="total-money">￥{{dishes.price}}</div>
-                <calculation :dishe="dishes"/>
-              </li>
-            </template>
+        <ul>
+          <template v-for="dishes in cartList">
+            <li :key="dishes.dishId" v-if="dishes.count>0">
+              <div class="goods-name">
+                {{dishes.dishName}}
+              </div>
+              <div class="total-money">￥{{dishes.price}}</div>
+              <calculation :dishe="dishes"/>
+            </li>
+          </template>
         </ul>
       </div>
     </div>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-  import {mapState, mapMutations} from 'vuex'
+  import {mapGetters, mapMutations} from 'vuex'
   import calculation from '../../src/components/calculation';
   export default {
     name: 'shoppingCart',
@@ -47,9 +47,6 @@
         layerOverlay: "layer-overlay",
         layerVisible: "layer-overlay-visible",
         shoppingCart: "shopping-cart",
-        totalCount: 0,
-        totalPrice: 0,
-        cartDatas: this.data,
       }
     },
     methods: {
@@ -57,16 +54,12 @@
         'CLEAR_CART',
       ]),
       toggleCart: function () {
-        if (this.totalCount > 0) {
+        if (this.cTotalCount > 0) {
           this.isShow = !this.isShow;
         }
       },
       clearCart: function () {
-        this.cartDatas.forEach(function (disheType, index1) {
-          disheType.dishes.forEach(function (dishe, index2) {
-            dishe['cartCount'] = 0;
-          });
-        });
+        this.CLEAR_CART();
         this.isShow = false;
       },
     },
@@ -74,14 +67,24 @@
       calculation
     },
     computed: {
-      ...mapState(['cartList']),
+      ...mapGetters({cartList: 'cartListArr'}),
       cTotalCount: function () {
-        this.totalCount=1;
-        return 1;
+        let num = 0;
+        this.cartList.forEach(item => {
+          if (item['count']) {
+            num += item['count'];
+          }
+        });
+        return num;
       },
       cTotalPrice: function () {
-
-        return 0;
+        let money = 0;
+        this.cartList.forEach(item => {
+          if (item['price'] && item['count']) {
+            money += item['price'] * item['count'];
+          }
+        });
+        return money;
       }
     },
 
