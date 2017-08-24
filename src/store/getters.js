@@ -7,7 +7,6 @@ export default {
         arr.push(cartList[disheTypeId][disheId][disheId]);
       });
     });
-    console.log(arr);
     return arr;
-  }
+  },
 }

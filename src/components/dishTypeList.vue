@@ -2,8 +2,8 @@
   <div class="type-left-side">
     <div id="left-side-wrapper" ref="leftWrapper">
       <ul class="content-inner">
-        <li v-for="(dishType,index) in disheTypes" :class="{selected:dishTypeIndex===index}"
-            @click="selectDishtType(index)">{{dishType.dishTypeName}}
+        <li v-for="(dishType,index) in disheTypes" :class="{selected:$store.state.dishTypeIndex===index}"
+            @click="SELECT_DISTYPE({index:index})">{{dishType.dishTypeName}}
         </li>
       </ul>
     </div>
@@ -12,19 +12,23 @@
 
 <script>
   import BScroll from 'better-scroll';
+  import {mapState,mapMutations} from 'vuex';
   export default {
     name: 'dishTypeList',
     data () {
       return {
         selected: 'selected',
         disheTypes: this.data,
-        dishTypeIndex: 0,
       }
     },
     props: ['data'],
     methods: {
+      ...mapMutations([
+        'SELECT_DISTYPE',
+      ]),
       selectDishtType: function (index) {
-        this.dishTypeIndex = index;
+       // this.dishTypeIndex = index;
+        this.SELECT_DISTYPE({index:index});
         this.$parent.$emit('selectDishtType', index);
       },
       initScroll: function () {

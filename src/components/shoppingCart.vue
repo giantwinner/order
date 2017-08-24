@@ -1,11 +1,11 @@
 <template>
   <div class="cart-module">
-    <div :class="[isShow?layerIn:layerOut,containerClass]">
-      <div :class="[isShow?layerVisible:'',layerOverlay]" @click="toggleCart"></div>
+    <div :class="[cartVisible?layerIn:layerOut,containerClass]">
+      <div :class="[cartVisible?layerVisible:'',layerOverlay]" @click="toggleCart"></div>
       <div class="shopping-cart-list">
         <div class="top">
           <span>购物车</span>
-          <div class="clear-cart" @click="clearCart">
+          <div class="clear-cart" @click="CLEAR_CART">
             <i class="cdicon-empty"></i>清空
           </div>
         </div>
@@ -22,25 +22,24 @@
         </ul>
       </div>
     </div>
-    <div :class="[{empty:cTotalCount===0},shoppingCart]">
+    <div :class="[{empty:totalCount===0},shoppingCart]">
       <div class="cart-icon" @click="toggleCart">
-        <span class="amount" v-show='cTotalCount>0'>{{cTotalCount}}</span>
+        <span class="amount" v-show='totalCount>0'>{{totalCount}}</span>
         <i class="cdicon-gwc"></i>
       </div>
-      <div class="total">共￥<span>{{cTotalPrice}}</span></div>
+      <div class="total">共￥<span>{{totalPrice}}</span></div>
       <a href="" class="to-checout">去结算</a>
     </div>
   </div>
 </template>
 
 <script>
-  import {mapGetters, mapMutations} from 'vuex'
+  import {mapGetters, mapMutations, mapState} from 'vuex';
   import calculation from '../../src/components/calculation';
   export default {
     name: 'shoppingCart',
     data () {
       return {
-        isShow: false,
         layerIn: 'layer-in',
         layerOut: 'layer-out',
         containerClass: "shopping-cart-list-container",
@@ -54,13 +53,9 @@
         'CLEAR_CART',
       ]),
       toggleCart: function () {
-        if (this.cTotalCount > 0) {
-          this.isShow = !this.isShow;
+        if (this.totalCount > 0) {
+          this.$store.state.cartVisible = !this.$store.state.cartVisible;
         }
-      },
-      clearCart: function () {
-        this.CLEAR_CART();
-        this.isShow = false;
       },
     },
     components: {
@@ -68,7 +63,10 @@
     },
     computed: {
       ...mapGetters({cartList: 'cartListArr'}),
-      cTotalCount: function () {
+      cartVisible: function () {
+        return this.$store.state.cartVisible;
+      },
+      totalCount: function () {
         let num = 0;
         this.cartList.forEach(item => {
           if (item['count']) {
@@ -77,7 +75,7 @@
         });
         return num;
       },
-      cTotalPrice: function () {
+      totalPrice: function () {
         let money = 0;
         this.cartList.forEach(item => {
           if (item['price'] && item['count']) {

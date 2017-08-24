@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import {mapGetters, mapMutations} from 'vuex'
+  import {mapMutations} from 'vuex';
   export default {
     name: 'calculation',
     data () {
@@ -19,7 +19,7 @@
       }
     },
     props: {
-      dishe: Object
+      dishe: Object,
     },
     methods: {
       ...mapMutations([
@@ -27,7 +27,7 @@
         'REDUCE_CART'
       ]),
       add: function () {
-        var dishe = this.dishe;
+        let dishe = this.dishe;
         this.ADD_CART({
           dishTypeId: dishe.dishTypeId,
           dishId: dishe.dishId,
@@ -36,22 +36,25 @@
         });
       },
       reduce: function () {
-        var dishe = this.dishe;
+        let dishe = this.dishe;
         this.REDUCE_CART({dishTypeId: dishe.dishTypeId, dishId: dishe.dishId});
+
+        //购物车中减为空的时候关闭购物车
+        if (this.$store.getters.cartListArr.length === 0) {
+          this.$store.state.cartVisible = false;
+        }
       }
     },
     computed: {
-      ...mapGetters({cartList: 'cartListArr'}),
       cartCount: function () {
-        let cart = this.cartList;
+        let cart = this.$store.getters.cartListArr;
         let dishId = this.dishe.dishId;
         let count = 0;
-        this.cartList.forEach(item => {
-          if (item[dishId] == dishId) {
-            count = cart['count'];
+        cart.forEach(item => {
+          if (item['dishId'] == dishId) {
+            count = item['count'];
           }
         });
-        console.log(cart.count);
         return count;
       }
     }

@@ -7,6 +7,8 @@ import getters from './getters'
 Vue.use(Vuex);
 const state = {
   cartList: [],
+  cartVisible:false,
+  dishTypeIndex:0,
 }
 
 export default new Vuex.Store({

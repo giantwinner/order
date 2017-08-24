@@ -12,7 +12,7 @@
                 <img :src="pic(dishe.pic)" alt="" class="pic">
                 <div class="name">{{dishe.dishName}}</div>
                 <div class="price"><i>￥</i>{{dishe.price}}</div>
-                <calculation :dishe="dishe" @cartCountChange="cartCountChange"/>
+                <calculation :dishe="dishe"/>
               </router-link>
             </li>
           </template>
@@ -26,13 +26,15 @@
 <script>
   import calculation from '../../src/components/calculation';
   import BScroll from 'better-scroll';
+  import {mapGetters, mapMutations, mapState} from 'vuex';
   export default {
     name: 'goodsList',
     data () {
       return {
         goodsList: this.data,
         listHeight: [],
-        scrollY: 0
+        scrollY: 0,
+        dishTypeIndex:this.$store.state.dishTypeIndex,
       }
 
     },
@@ -42,9 +44,6 @@
         return url === null || url.length === 0 ? palceholderImg : url;
       },
 
-      cartCountChange: function (data) {
-        this.$emit('cartCountChange', data);
-      },
       calculateHeight: function () {
         var goodsList = this.$refs.contentInner.childNodes;
         var height = 0;
@@ -78,6 +77,7 @@
     },
     props: ['data'],
     computed: {
+
       currentIndex: function () {
         for (var i = 0; i < this.listHeight.length; i++) {
           var height1 = this.listHeight[i];
@@ -91,12 +91,14 @@
     },
     created(){
 
-      this.$parent.$on('selectDishtType', (index) => {
+//      this.$parent.$on('selectDishtType', (index) => {
+//
+//        var el = document.getElementsByClassName('goods-list')[index];
+//
+//        this.goodsListScroll.scrollToElement(el, 300);
+//      })
 
-        var el = document.getElementsByClassName('goods-list')[index];
 
-        this.goodsListScroll.scrollToElement(el, 300);
-      })
     },
     mounted(){
 
@@ -114,7 +116,15 @@
           this.calculateHeight();
 
         })
+      },
+      dishTypeIndex:function (val) {
+          console.log('watch');
+        var el = document.getElementsByClassName('goods-list')[val];
+        this.goodsListScroll.scrollToElement(el, 300);
       }
+    },
+    updated(){
+        console.log('udpate')
     }
   }
 </script>
