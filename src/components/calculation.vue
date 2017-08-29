@@ -1,11 +1,9 @@
 <template>
-  <section>
-    <div class="select-amount">
-      <i :class="[{hidden:cartCount<=0},reduceClass]" @click.prevent="reduce"></i>
-      <input type="number" readonly :class="{hidden:cartCount<=0}" v-model="cartCount">
-      <i class="cdicon-add" @click.prevent="add"></i>
-    </div>
-  </section>
+  <div class="select-amount">
+    <i :class="[{hidden:cartCount<=0},reduceClass]" @click.prevent="reduce"></i>
+    <input type="number" readonly :class="{hidden:cartCount<=0}" v-model="cartCount">
+    <i class="cdicon-add" @click.prevent="add"></i>
+  </div>
 </template>
 
 <script>
@@ -14,7 +12,6 @@
     name: 'calculation',
     data () {
       return {
-        //cal_dishe: this.dishe,
         reduceClass: 'cdicon-dec',
       }
     },

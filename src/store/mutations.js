@@ -2,10 +2,8 @@ import {
   ADD_CART,
   REDUCE_CART,
   CLEAR_CART,
-  SELECT_DISTYPE,
+  INIT_CARTDATA,
 } from './mutation-types.js'
-
-// import {setStore, getStore} from '../config/mUtils'
 
 export default {
 
@@ -30,9 +28,9 @@ export default {
       };
     }
     state.cartList = {...cart};
-    // //存入localStorage
-    // setStore('buyCart', state.cartList);
+    window.localStorage.setItem("cart", JSON.stringify(state.cartList));
   },
+
   [REDUCE_CART](state, {
     dishTypeId,
     dishId,
@@ -47,30 +45,24 @@ export default {
         } else {
           item[dishId]['count']--;
         }
-        // //存入localStorage
-        // setStore('buyCart', state.cartList);
       } else {
         item[dishId] = null;
       }
     }
     state.cartList = {...cart};
+    window.localStorage.setItem("cart", JSON.stringify(state.cartList));
   },
-  [SELECT_DISTYPE](state, {
-    index,
-  }) {
-    state.dishTypeIndex = index;
+
+  [INIT_CARTDATA](state) {
+    let cartData = window.localStorage.getItem("cart");
+    if (cartData) {
+      state.cartList = JSON.parse(cartData);
+
+    }
   },
-  // //网页初始化时从本地缓存获取购物车数据
-  // [INIT_BUYCART](state) {
-  //   let initCart = getStore('buyCart');
-  //   if (initCart) {
-  //     state.cartList = JSON.parse(initCart);
-  //   }
-  // },
-  //清空当前商品的购物车信息
   [CLEAR_CART](state) {
     state.cartList = {};
     state.cartVisible = false;
-    //setStore('buyCart', state.cartList);
+    window.localStorage.setItem("cart", JSON.stringify(state.cartList));
   },
 }

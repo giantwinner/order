@@ -8,25 +8,22 @@
             <h1 class="kind-type">{{disheType.dishTypeName}}({{disheType.dishes.length}})</h1></div>
           <template v-for="dishe in disheType.dishes">
             <li>
-              <router-link :to="{ name: 'goodsDetails', params: { dishId: dishe.dishId } }">
+              <router-link :to="{ name: 'goodsDetails', params: {dishTypeId:disheType.dishTypeId,dishId: dishe.dishId} }">
                 <img :src="pic(dishe.pic)" alt="" class="pic">
-                <div class="name">{{dishe.dishName}}</div>
+              </router-link>
+              <div class="name">{{dishe.dishName}}</div>
                 <div class="price"><i>￥</i>{{dishe.price}}</div>
                 <calculation :dishe="dishe"/>
-              </router-link>
             </li>
           </template>
         </ul>
       </template>
     </div>
   </div>
-
 </template>
-
 <script>
   import calculation from '../../src/components/calculation';
   import BScroll from 'better-scroll';
-  import {mapGetters, mapMutations, mapState} from 'vuex';
   export default {
     name: 'goodsList',
     data () {
@@ -34,9 +31,7 @@
         goodsList: this.data,
         listHeight: [],
         scrollY: 0,
-        dishTypeIndex:this.$store.state.dishTypeIndex,
       }
-
     },
     methods: {
       pic: function (url) {
@@ -90,22 +85,14 @@
       }
     },
     created(){
-
-//      this.$parent.$on('selectDishtType', (index) => {
-//
-//        var el = document.getElementsByClassName('goods-list')[index];
-//
-//        this.goodsListScroll.scrollToElement(el, 300);
-//      })
-
-
+      this.$parent.$on('selectDishtType', (index) => {
+        var el = document.getElementsByClassName('goods-list')[index];
+        this.goodsListScroll.scrollToElement(el, 300);
+      })
     },
     mounted(){
-
       this.$nextTick(() => {
-
         this.initScroll();
-
       });
     },
     watch: {
@@ -114,18 +101,9 @@
         this.$nextTick(() => {
           this.goodsListScroll.refresh();
           this.calculateHeight();
-
         })
       },
-      dishTypeIndex:function (val) {
-          console.log('watch');
-        var el = document.getElementsByClassName('goods-list')[val];
-        this.goodsListScroll.scrollToElement(el, 300);
-      }
     },
-    updated(){
-        console.log('udpate')
-    }
   }
 </script>
 

@@ -13,7 +13,7 @@ export default new Router({
       component: menuList
     },
     {
-      path: '/goodsDetails/:dishId',
+      path: '/goodsDetails/:dishTypeId/:dishId',
       name: 'goodsDetails',
       component: goodsDetails
     }

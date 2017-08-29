@@ -3,40 +3,21 @@
     <div class="scroll-view">
       <div class="page-body">
         <div class="detail-img">
-          <img src="images/detail_placeholder.png" alt="" class="goods-pic">
+          <img :src="pic(dishe.pic)" alt="" class="goods-pic">
         </div>
         <div class="goods-details-container">
           <div class="goods-name">
-            菜品名称
+            {{dishe.dishName}}
           </div>
-          <div class="discount"><i>券</i><span>立减2元</span></div>
-          <div class="specifications-title">规格</div>
-          <ul class="specifications">
-            <li class="checked">规格字段</li>
-            <li>规格字段字段字</li>
-            <li>规格字段</li>
-            <li>规格字段</li>
-            <li>规格字段字段</li>
-            <li>规格字段</li>
-          </ul>
-          <div class="attribute-title">属性</div>
-          <ul class="attribute">
-            <li class="checked">属性字段</li>
-            <li>属性字段字段字字段</li>
-            <li>属性字段</li>
-            <li>属性字段字段</li>
-            <li>属性字段</li>
-            <li>属性字段</li>
-          </ul>
           <div class="price-container">
             <div class="price">
-              <span>￥</span>48
+              <span>￥</span>{{dishe.price}}
             </div>
-            <calculation :dishe="dishe" @cartCountChange="cartCountChange">
-              <div class="add-to-cart" slot="addCart">
-                加入购物车
-              </div>
+            <calculation :dishe="dishe"  v-show="cartCount>0">
             </calculation>
+            <div class="add-to-cart" v-show="cartCount<=0"  @click="addCart">
+              加入购物车
+            </div>
           </div>
           <div class="goods-info">
             <h1>商品描述</h1>
@@ -44,35 +25,80 @@
           </div>
         </div>
       </div>
-      <shopping-cart :total-count="totalCount" :data="disheTypes"></shopping-cart>
+      <shopping-cart></shopping-cart>
     </div>
   </div>
 </template>
 
 <script>
+  import {mapMutations} from 'vuex';
   import shoppingCart from '../../src/components/shoppingCart';
   import calculation from '../../src/components/calculation';
   export default {
     name: 'goodsDetail',
     data () {
       return {
-        "disheTypes": [],
-        "totalCount": 0,
-        dishe:{}
+        dishe: {},
+        addBtnVisible:true
       }
     },
     components: {
       calculation,
       shoppingCart,
     },
-    methods: {
-      cartCountChange: function (data) {
-        this.$emit('cartCountChange', data);
-      },
+    computed: {
+      cartCount: function () {
+        let cart = this.$store.getters.cartListArr;
+        let dishId = this.dishe.dishId;
+        let count = 0;
+        cart.forEach(item => {
+          if (item['dishId'] == dishId) {
+            count = item['count'];
+          }
+        });
+        return count;
+      }
     },
-    mounted(){
-      console.log(this.$root.data);
-    }
+    methods: {
+      ...mapMutations([
+        'INIT_CARTDATA',
+        'ADD_CART'
+      ]),
+      pic: function (url) {
+        var palceholderImg = '/static/images/list_placeholder.png';
+        return url === null || url.length === 0 ? palceholderImg : url;
+      },
+      addCart:function () {
+        let dishe = this.dishe;
+        this.ADD_CART({
+          dishTypeId: dishe.dishTypeId,
+          dishId: dishe.dishId,
+          dishName: dishe.dishName,
+          price: dishe.price
+        });
+      }
+    },
+    created(){
+      this.INIT_CARTDATA();
+
+
+      let data = window.localStorage.getItem("data");
+      let params = this.$router.history.current.params;
+      if (params && data) {
+        data = JSON.parse(data);
+        let _self=this;
+        data.forEach(function (dishType) {
+          if (dishType['dishTypeId'] === params.dishTypeId) {
+            dishType['dishes'].forEach(function (item) {
+              if (item['dishId'] === params.dishId) {
+                _self.dishe =item;
+              }
+            });
+          }
+        });
+
+      }
+    },
   }
 </script>
 <style lang="scss" scoped>
