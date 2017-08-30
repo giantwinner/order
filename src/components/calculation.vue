@@ -1,7 +1,8 @@
 <template>
   <div class="select-amount">
-    <i :class="[{hidden:cartCount<=0},reduceClass]" @click.prevent="reduce"></i>
-    <input type="number" readonly :class="{hidden:cartCount<=0}" v-model="cartCount">
+    <!--<i :class="[{hidden:cartCount<=0},reduceClass]" @click.prevent="reduce"></i>-->
+    <i class="cdicon-dec" v-visibility="cartCount>0" @click.prevent="reduce"></i>
+    <input type="number" v-visibility="cartCount>0" v-model="cartCount" readonly>
     <i class="cdicon-add" @click.prevent="add"></i>
   </div>
 </template>
@@ -12,7 +13,7 @@
     name: 'calculation',
     data () {
       return {
-        reduceClass: 'cdicon-dec',
+        //reduceClass: 'cdicon-dec',
       }
     },
     props: {
@@ -54,6 +55,37 @@
         });
         return count;
       }
+    },
+    directives: {
+//      visibility: {
+//        bind: function (el,binding) {
+//          if (typeof binding.value == "boolean") {
+//            if (binding.value === true) {
+//              el.style.visibility = "visible";
+//            } else {
+//              el.style.visibility = "hidden";
+//            }
+//          }
+//        },
+//        update: function (el, binding) {
+//          if (typeof binding.value == "boolean") {
+//            if (binding.value === true) {
+//              el.style.visibility = "visible";
+//            } else {
+//              el.style.visibility = "hidden";
+//            }
+//          }
+//        }
+//      }
+        visibility:function (el, binding) {
+          if (typeof binding.value == "boolean") {
+            if (binding.value === true) {
+              el.style.visibility = "visible";
+            } else {
+              el.style.visibility = "hidden";
+            }
+          }
+        }
     }
 
   }
