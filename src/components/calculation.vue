@@ -3,12 +3,14 @@
     <!--<i :class="[{hidden:cartCount<=0},reduceClass]" @click.prevent="reduce"></i>-->
     <i class="cdicon-dec" v-visibility="cartCount>0" @click.prevent="reduce"></i>
     <input type="number" v-visibility="cartCount>0" v-model="cartCount" readonly>
-    <i class="cdicon-add" @click.prevent="add"></i>
+    <i class="cdicon-add" @click.prevent="add($event)"></i>
   </div>
 </template>
 
 <script>
   import {mapMutations} from 'vuex';
+  import fly from '../assets/js/zepto.fly.min';
+
   export default {
     name: 'calculation',
     data () {
@@ -24,7 +26,7 @@
         'ADD_CART',
         'REDUCE_CART'
       ]),
-      add: function () {
+      add: function (event) {
         let dishe = this.dishe;
         this.ADD_CART({
           dishTypeId: dishe.dishTypeId,
@@ -32,6 +34,7 @@
           dishName: dishe.dishName,
           price: dishe.price
         });
+        this.addFly($(event.currentTarget));//加入购物车飞入动画
       },
       reduce: function () {
         let dishe = this.dishe;
@@ -41,6 +44,34 @@
         if (this.$store.getters.cartListArr.length === 0) {
           this.$store.state.cartVisible = false;
         }
+      },
+      addFly: function (t) {
+        var e = this
+          , i = $('<span class="u-flyer" />');
+        e.addCartAnimate = function () {
+          var t = $(".cart-icon");
+          t.addClass("shopCartAnimate"),
+            t.on("webkitAnimationEnd", function () {
+              t.removeClass("shopCartAnimate")
+            })
+        };
+        i.fly({
+          start: {
+            left: t.offset().left,
+            top: t.offset().top
+          },
+          end: {
+            left: 20,
+            top: window.innerHeight - 20,
+            width: 20,
+            height: 20
+          },
+          speed: 2.8,
+          onEnd: function () {
+            this.destroy(),
+            e.addCartAnimate()
+          }
+        })
       }
     },
     computed: {
@@ -77,15 +108,15 @@
 //          }
 //        }
 //      }
-        visibility:function (el, binding) {
-          if (typeof binding.value == "boolean") {
-            if (binding.value === true) {
-              el.style.visibility = "visible";
-            } else {
-              el.style.visibility = "hidden";
-            }
+      visibility: function (el, binding) {
+        if (typeof binding.value == "boolean") {
+          if (binding.value === true) {
+            el.style.visibility = "visible";
+          } else {
+            el.style.visibility = "hidden";
           }
         }
+      }
     }
 
   }
