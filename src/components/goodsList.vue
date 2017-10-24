@@ -59,7 +59,7 @@
           swipeTime: 2000,
           click: true,
         });
-        this.goodsListScroll.on('scrollEnd', (pos) => {
+        this.goodsListScroll.on('scroll', (pos) => {
           this.scrollY = Math.abs(Math.round(pos.y));
           var cindex = this.currentIndex;
           this.$parent.$emit('scrollIndex', cindex);
