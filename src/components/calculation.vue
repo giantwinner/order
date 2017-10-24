@@ -24,6 +24,8 @@
       add: function () {
         this.cal_dishe.cartCount++;
         this.$emit('cartCountChange', this.cal_dishe);
+        //this.$parent.$emit('cartCountChange', this.cal_dishe);
+        console.log(this.$parent);
 
       },
       reduce: function () {

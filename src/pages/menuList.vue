@@ -7,7 +7,7 @@
           <goodsList @cartCountChange="cartCountChange" :data="disheTypes"/>
         </div>
       </div>
-      <shopping-cart :total-count="totalCount" :data="disheTypes"></shopping-cart>
+      <shopping-cart :data="disheTypes"></shopping-cart>
     </div>
   </div>
 </template>
