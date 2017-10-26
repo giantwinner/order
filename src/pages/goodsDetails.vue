@@ -39,7 +39,6 @@
     data () {
       return {
         dishe: {},
-        addBtnVisible:true
       }
     },
     components: {
