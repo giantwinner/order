@@ -13,9 +13,9 @@
             <div class="price">
               <span>￥</span>{{dishe.price}}
             </div>
-            <calculation :dishe="dishe"  v-if="cartCount>0">
+            <calculation :dishe="dishe"  v-show="cartCount>0">
             </calculation>
-            <div class="add-to-cart" v-else  @click="addCart">
+            <div class="add-to-cart" v-show="cartCount<=0"  @click="addCart">
               加入购物车
             </div>
           </div>
