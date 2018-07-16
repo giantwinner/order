@@ -2,6 +2,7 @@ var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
+var webpack = require("webpack")
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -63,8 +64,18 @@ module.exports = {
       },
        {
         test: /\.scss$/,
-        loaders: ["style", "css", "sass"] 
+        loaders: ["style", "css", "sass"]
+      },
+      {
+        test: require.resolve('zepto'),
+        loader: 'exports-loader?window.Zepto!script-loader'
       },
     ]
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      Zepto: "zepto",
+      $: "zepto",
+    })
+  ]
 }

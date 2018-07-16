@@ -4,10 +4,10 @@
       <dishTypeList :data="disheTypes"/>
       <div class="page-body">
         <div class="menu-list-container">
-          <goodsList @cartCountChange="cartCountChange" :data="disheTypes"/>
+          <goodsList :data="disheTypes"/>
         </div>
       </div>
-      <shopping-cart :data="disheTypes"></shopping-cart>
+      <shopping-cart></shopping-cart>
     </div>
   </div>
 </template>
@@ -18,13 +18,13 @@
   import dishTypeList from '../../src/components/dishTypeList';
   import Vue from 'vue';
   import VueResource from 'vue-resource';
+  import {mapMutations} from 'vuex';
   Vue.use(VueResource);
   export default {
     name: 'menuList',
     data () {
       return {
         "disheTypes": [],
-        "totalCount": 0,
       }
     },
     components: {
@@ -33,22 +33,12 @@
       dishTypeList,
     },
     methods: {
-      cartCountChange: function (changedCount) {
-        this.disheTypes.forEach(function (disheType, index1) {
-          if (disheType['dishTypeId'] === changedCount['dishTypeId']) {
-            disheType['dishes'].forEach(function (dish, index2) {
-              if (dish['dishId'] === changedCount['dishId']) {
-                dish['cartCount'] = changedCount['cartCount'];
-              }
-            });
-          }
-
-
-        });
-      },
+      ...mapMutations([
+        'INIT_CARTDATA'
+      ]),
     },
     created(){
-      var _self = this;
+      let _self = this;
       this.$http.get('../../static/data.json').then((res) => {
           if (res.statusText === 'OK') {
             res.data.resultObject.disheTypes.forEach(function (ele, index) {
@@ -57,9 +47,11 @@
               });
             });
             _self.disheTypes = res.data.resultObject.disheTypes;
+            window.localStorage.setItem("data",JSON.stringify(_self.disheTypes));
           }
         }
       );
+      this.INIT_CARTDATA();
     },
   }
 </script>

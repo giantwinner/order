@@ -158,4 +158,12 @@ input[type="file"] {
 body {
   background-color: $background;
 }
-
+.u-flyer {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  position: fixed;
+  z-index: 99999999;
+  background: red;
+}
